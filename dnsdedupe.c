@@ -226,8 +226,10 @@ time_parse(nmsg_message_t m,
 	struct tm gm;
 
 	if (!strptime(value, "%Y-%m-%d %T", &gm)) {
-		return (nmsg_res_parse_error);
-	}
+        if (!strptime(value, "%Y-%m-%dT%TZ", &gm)) {
+            return (nmsg_res_parse_error);
+        }
+    }
 
 	t = malloc(sizeof(*t));
 	*t = timegm(&gm);
